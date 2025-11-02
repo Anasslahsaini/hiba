@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- NOUVEAU TITRE -->
+    <title>Hiba Aafi - Portfolio & Recherche d'Alternance (Génie Électrique)</title>
+    <!-- NOUVELLE META DESCRIPTION -->
+    <meta name="description" content="Découvrez le profil de Hiba Aafi, future Ingénieure CNAM (Génie Électrique). Recherche active d'une alternance de 3 ans. Compétences techniques, gestion de projet et rigueur.">
+    <!-- Chargement de Tailwind CSS pour un design moderne et responsive -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Configuration de la police Inter et des couleurs personnalisées -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'charcoal-dark': '#1a1a1a', // Noir Charbon
+                        'soft-gray': '#f3f4f6',     // Gris très clair / Fond de section en mode clair
+                        'energy-green': '#059669',   // Vert professionnel (Accent)
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Définition du style d'animation de base */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        /* Classe activée par JavaScript */
+        .fade-in-up.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        /* Style pour les tuiles de compétences */
+        .skill-tile {
+            transition: all 0.3s ease;
+        }
+        .skill-tile:hover {
+            transform: translateY(-4px) scale(1.02);
+            /* Utilisation du Vert Énergie pour l'ombre au survol (RGB de #059669) */
+            box-shadow: 0 10px 15px -3px rgba(5, 150, 105, 0.2), 0 4px 6px -2px rgba(5, 150, 105, 0.05);
+        }
+        /* Assure un défilement doux */
+        html {
+            scroll-behavior: smooth;
+        }
+        /* CORRECTION DU DÉBORDEMENT HORIZONTAL */
+        body {
+            overflow-x: hidden;
+        }
+
+        /* --- STYLES SPÉCIFIQUES À L'ANIMATION D'INTRODUCTION --- */
+        #intro-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 1;
+            transition: opacity 1s ease-out;
+            font-weight: 700;
+        }
+        /* Style du curseur de l'effet machine à écrire */
+        .typing-cursor {
+            display: inline-block;
+            width: 3px;
+            height: 1.2em;
+            background-color: #059669;
+            margin-left: 5px;
+            animation: blink 0.7s infinite;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        /* Cache le curseur lorsque le texte est complet */
+        #intro-text.finished + .typing-cursor {
+             animation: none;
+             opacity: 0;
+        }
+    </style>
+</head>
+<body class="bg-white text-charcoal-dark font-sans transition-colors duration-500">
+    <!-- OVERLAY D'INTRODUCTION (Mode Machine à Écrire) -->
+    <div id="intro-overlay">
+        <div class="px-4 flex items-center justify-center max-w-full mx-auto">
+            <!-- TEXTE MIS À JOUR (Prête) -->
+            <h1 id="intro-text" class="inline text-3xl sm:text-4xl font-extrabold text-charcoal-dark">
+            </h1>
+            <span class="typing-cursor"></span>
+        </div>
+    </div>
+    <!-- FIN OVERLAY -->
+
+    <!-- Navbar Fixe / TOC (Table of Contents) -->
+    <nav class="sticky top-0 z-50 bg-white border-b border-soft-gray shadow-lg transition-colors duration-500">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex-shrink-0">
+                    <!-- MIS À JOUR -->
+                    <a href="#hero" class="text-xl font-bold text-energy-green tracking-wider">H. AAFI</a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <!-- Navigation (TOC) - Desktop -->
+                    <div class="hidden md:block">
+                        <div class="ml-10 flex items-baseline space-x-4">
+                            <a href="#summary" class="text-charcoal-dark hover:text-energy-green px-3 py-2 rounded-md text-sm font-medium transition duration-200">Profil</a>
+                            <a href="#skills" class="text-charcoal-dark hover:text-energy-green px-3 py-2 rounded-md text-sm font-medium transition duration-200">Compétences</a>
+                            <a href="#experience" class="text-charcoal-dark hover:text-energy-green px-3 py-2 rounded-md text-sm font-medium transition duration-200">Expérience</a>
+                            <!-- LIEN VERS LES PROJETS AJOUTÉ -->
+                            <a href="#projects" class="text-charcoal-dark hover:text-energy-green px-3 py-2 rounded-md text-sm font-medium transition duration-200">Projets</a>
+                            <a href="#education" class="text-charcoal-dark hover:text-energy-green px-3 py-2 rounded-md text-sm font-medium transition duration-200">Formation</a>
+                            <a href="#contact" class="px-3 py-2 rounded-md text-sm font-medium text-white bg-energy-green hover:bg-emerald-700 transition duration-300 shadow-md">
+                                Contact
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- NOUVEAU: Bouton Menu Mobile (Hamburger) -->
+                    <button id="menu-button" class="md:hidden p-2 rounded-md text-charcoal-dark hover:text-energy-green hover:bg-soft-gray focus:outline-none focus:ring-2 focus:ring-inset focus:ring-energy-green transition duration-150" aria-label="Ouvrir le menu de navigation">
+                        <!-- Icône Hamburger -->
+                        <svg id="menu-icon-open" class="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
+                        <!-- Icône Croix (Close) -->
+                        <svg id="menu-icon-close" class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                    </button>
+
+                </div>
+            </div>
+        </div>
+        <!-- NOUVEAU: Menu Mobile (Masqué par défaut) -->
+        <div id="mobile-menu" class="hidden md:hidden absolute w-full bg-white shadow-xl border-t border-soft-gray pb-4 transition-all duration-300 ease-in-out">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#summary" class="block px-3 py-2 rounded-md text-base font-medium text-charcoal-dark hover:bg-soft-gray hover:text-energy-green transition duration-200">Profil</a>
+                <a href="#skills" class="block px-3 py-2 rounded-md text-base font-medium text-charcoal-dark hover:bg-soft-gray hover:text-energy-green transition duration-200">Compétences</a>
+                <a href="#experience" class="block px-3 py-2 rounded-md text-base font-medium text-charcoal-dark hover:bg-soft-gray hover:text-energy-green transition duration-200">Expérience</a>
+                <a href="#projects" class="block px-3 py-2 rounded-md text-base font-medium text-charcoal-dark hover:bg-soft-gray hover:text-energy-green transition duration-200">Projets</a>
+                <a href="#education" class="block px-3 py-2 rounded-md text-base font-medium text-charcoal-dark hover:bg-soft-gray hover:text-energy-green transition duration-200">Formation</a>
+                <a href="#contact" class="mt-4 block px-3 py-2 rounded-md text-base font-medium text-white bg-energy-green hover:bg-emerald-700 text-center">Contactez-moi</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Le padding-bottom est augmenté (pb-20) pour compenser le CTA fixe sur mobile -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 pb-20 md:pb-12">
+
+        <!-- 1. Hero section + name + mission statement + CTA -->
+        <section id="hero" class="min-h-[85vh] flex items-center pt-16 -mt-16">
+            <div class="flex flex-col md:flex-row gap-12 items-center">
+                
+                <!-- Colonne de droite (Photo de profil) -->
+                <!-- MODIFIÉ: 'order-1' (mobile) et 'md:order-2' (desktop) pour changer la position -->
+                <div class="order-1 md:order-2 md:w-1/3 flex justify-center mt-10 md:mt-0 fade-in-up delay-100">
+                    <!-- NOUVEAU: Photo de profil remplacée par un placeholder SVG avec initiales -->
+                    <div class="w-56 h-56 sm:w-64 sm:h-64 rounded-full overflow-hidden shadow-2xl border-4 border-energy-green/50 relative flex items-center justify-center bg-soft-gray">
+                        <svg class="w-32 h-32 text-energy-green" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <text x="50%" y="50%" dominant-baseline="central" text-anchor="middle" font-size="12" font-family="Inter, sans-serif" font-weight="600">HA</text>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Colonne de gauche (texte) -->
+                <!-- MODIFIÉ: 'order-2' (mobile) et 'md:order-1' (desktop) pour changer la position -->
+                <div class="order-2 md:order-1 md:w-2/3 space-y-4 sm:space-y-6 fade-in-up">
+                    <p class="text-lg sm:text-xl font-medium text-gray-500">Bonjour, je suis</p>
+                    <h1 class="text-5xl sm:text-6xl lg:text-7xl font-extrabold leading-tight text-charcoal-dark">
+                        <!-- MIS À JOUR -->
+                        Hiba <span class="text-energy-green">Aafi</span>
+                    </h1>
+                    <!-- Mission Statement (MIS À JOUR) -->
+                    <h2 class="text-xl sm:text-2xl font-semibold text-gray-700 border-l-4 border-energy-green pl-4">
+                        Future Ingénieure en Génie Électrique (CNAM) | <span class="block sm:inline text-charcoal-dark">Recherche d'Alternance (3 ans)</span>
+                    </h2>
+                    <!-- CONTENU MIS À JOUR -->
+                    <p class="mt-8 text-lg max-w-2xl">
+                        <strong class="font-semibold">Mon objectif :</strong> Mettre en pratique mes compétences techniques et approfondir mon expertise dans le domaine du génie électrique au sein de votre entreprise.
+                    </p>
+                    <!-- CTA + Download CV (Bouton CV supprimé, LinkedIn mis en avant) -->
+                    <div class="pt-6 flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
+                        <a href="#contact" class="px-6 py-3 text-lg font-medium rounded-full text-white bg-energy-green hover:bg-emerald-700 transition duration-300 shadow-xl shadow-energy-green/40 text-center">
+                            Me contacter pour une Alternance
+                        </a>
+                        <!-- LIEN MIS À JOUR -->
+                        <a href="https://www.linkedin.com/in/hiba-aafi/" target="_blank" aria-label="Profil LinkedIn de Hiba Aafi" class="flex items-center justify-center p-3 px-6 rounded-full text-charcoal-dark border border-gray-400 hover:bg-soft-gray transition duration-300">
+                             <!-- Icône LinkedIn (à jour) -->
+                            <svg class="w-6 h-6 text-energy-green mr-2" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.551-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.742 7 2.742v6.493z"></path></svg>
+                            <span>Voir mon LinkedIn</span>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- --- -->
+        <!-- 2. Short professional summary (2–3 lines) -->
+        <!-- Background: bg-soft-gray (Alternance 1) -->
+        <section id="summary" class="py-16 sm:py-24 bg-soft-gray rounded-2xl transition-colors duration-500 my-16">
+            <div class="max-w-4xl mx-auto p-6 sm:p-8 text-center fade-in-up">
+                <!-- CONTENU MIS À JOUR -->
+                <h2 class="text-3xl font-bold mb-4 text-charcoal-dark">
+                    Mon Profil en Bref
+                </h2>
+                <!-- 2-3 lignes, ATS-friendly (CONTENU MIS À JOUR) -->
+                <p class="text-lg sm:text-xl leading-relaxed text-gray-700">
+                    Actuellement admise en formation cycle ingénieur en <strong>génie électrique</strong> au <strong>CNAM</strong>, je suis à la recherche d'une alternance de 3 ans. Issue d'une CPGE TSI, je possède une solide <strong>rigueur scientifique</strong> et une <strong>grande capacité d'adaptation</strong>. Je suis déterminée à appliquer mes compétences techniques et à m'investir pleinement dans des projets concrets.
+                </p>
+            </div>
+        </section>
+
+        <!-- --- -->
+        <!-- 3. Skills (grouped by technical & soft) -->
+        <!-- Background: bg-white (Alternance 2) -->
+        <section id="skills" class="py-16 sm:py-24 bg-white rounded-2xl transition-colors duration-500 my-16">
+            <!-- CONTENU MIS À JOUR -->
+            <h2 class="text-3xl sm:text-4xl font-bold text-center mb-12 sm:mb-16 text-charcoal-dark fade-in-up">
+                Mes Compétences Clés
+            </h2>
+            <div class="max-w-6xl mx-auto space-y-12">
+
+                <!-- Groupe 1: Compétences Techniques (Hard Skills) -->
+                <div class="fade-in-up delay-100">
+                    <!-- CONTENU MIS À JOUR -->
+                    <h3 class="text-2xl sm:text-3xl font-bold text-energy-green mb-6 border-b pb-2">Compétences Techniques & Informatiques</h3>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6">
+                        <!-- Compétences Mises à Jour -->
+                        <div class="skill-tile bg-soft-gray p-4 sm:p-6 rounded-xl text-center shadow-lg hover:shadow-2xl">
+                            <span class="text-2xl sm:text-3xl text-charcoal-dark mb-2 block">🖥️</span>
+                            <p class="font-semibold text-sm sm:text-lg">Langages</p>
+                            <p class="text-sm text-gray-600">Python, C, Java, HTML, Assembleur</p>
+                        </div>
+                        <div class="skill-tile bg-soft-gray p-4 sm:p-6 rounded-xl text-center shadow-lg hover:shadow-2xl">
+                            <span class="text-2xl sm:text-3xl text-charcoal-dark mb-2 block">⚡</span>
+                            <p class="font-semibold text-sm sm:text-lg">Électricité & Automatisme</p>
+                            <p class="text-sm text-gray-600">SIMATIC, Dialux Evo, AutoCAD</p>
+                        </div>
+                        <div class="skill-tile bg-soft-gray p-4 sm:p-6 rounded-xl text-center shadow-lg hover:shadow-2xl">
+                            <span class="text-2xl sm:text-3xl text-charcoal-dark mb-2 block">💡</span>
+                            <p class="font-semibold text-sm sm:text-lg">Électronique</p>
+                            <p class="text-sm text-gray-600">ARDUINO, ISIS, DEVC++</p>
+                        </div>
+                        <div class="skill-tile bg-soft-gray p-4 sm:p-6 rounded-xl text-center shadow-lg hover:shadow-2xl">
+                            <span class="text-2xl sm:text-3xl text-charcoal-dark mb-2 block">📐</span>
+                            <p class="font-semibold text-sm sm:text-lg">Modélisation & CAD</p>
+                            <p class="text-sm text-gray-600">Solidworks, MATLAB, Scilab, StarUML</p>
+                        </div>
+                        <div class="skill-tile bg-soft-gray p-4 sm:p-6 rounded-xl text-center shadow-lg hover:shadow-2xl">
+                            <span class="text-2xl sm:text-3xl text-charcoal-dark mb-2 block">📊</span>
+                            <p class="font-semibold text-sm sm:text-lg">Bureautique</p>
+                            <p class="text-sm text-gray-600">Excel, Word, PowerPoint, Outlook</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Groupe 2: Compétences Douces (Soft Skills) -->
+                <div class="fade-in-up delay-300">
+                    <!-- CONTENU MIS À JOUR -->
+                    <h3 class="text-2xl sm:text-3xl font-bold text-energy-green mb-6 border-b pb-2">Compétences Comportementales (Soft Skills)</h3>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6">
+                        <!-- Compétences Mises à Jour -->
+                        <div class="skill-tile bg-soft-gray p-4 sm:p-6 rounded-xl text-center shadow-lg hover:shadow-2xl">
+                            <span class="text-2xl sm:text-3xl text-charcoal-dark mb-2 block">🤝</span>
+                            <p class="font-semibold text-sm sm:text-lg">Travail en équipe</p>
+                        </div>
+                        <div class="skill-tile bg-soft-gray p-4 sm:p-6 rounded-xl text-center shadow-lg hover:shadow-2xl">
+                            <span class="text-2xl sm:text-3xl text-charcoal-dark mb-2 block">📈</span>
+                            <p class="font-semibold text-sm sm:text-lg">Capacité d'analyse</p>
+                        </div>
+                        <div class="skill-tile bg-soft-gray p-4 sm:p-6 rounded-xl text-center shadow-lg hover:shadow-2xl">
+                            <span class="text-2xl sm:text-3xl text-charcoal-dark mb-2 block">🔍</span>
+                            <p class="font-semibold text-sm sm:text-lg">Rigoureuse & Organisée</p>
+                        </div>
+                        <div class="skill-tile bg-soft-gray p-4 sm:p-6 rounded-xl text-center shadow-lg hover:shadow-2xl">
+                            <span class="text-2xl sm:text-3xl text-charcoal-dark mb-2 block">💡</span>
+                            <p class="font-semibold text-sm sm:text-lg">Curieuse & Adaptable</p>
+                        </div>
+                        <div class="skill-tile bg-soft-gray p-4 sm:p-6 rounded-xl text-center shadow-lg hover:shadow-2xl">
+                            <span class="text-2xl sm:text-3xl text-charcoal-dark mb-2 block">💬</span>
+                            <p class="font-semibold text-sm sm:text-lg">Sens relationnel</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- --- -->
+        <!-- 4. Professional experiences & measurable achievements (ATS format) -->
+        <!-- Background: bg-soft-gray (Alternance 3) -->
+        <section id="experience" class="py-16 sm:py-24 bg-soft-gray rounded-2xl transition-colors duration-500 my-16">
+            <!-- CONTENU MIS À JOUR -->
+            <h2 class="text-3xl sm:text-4xl font-bold text-center mb-12 sm:mb-16 text-charcoal-dark fade-in-up">
+                Expériences & Réalisations
+            </h2>
+            <div class="max-w-5xl mx-auto space-y-8 sm:space-y-12">
+
+                <!-- Expérience 1: Stage RADEEF (MIS À JOUR) -->
+                <div class="bg-white p-6 sm:p-8 rounded-xl shadow-xl border-t-4 border-energy-green/70 fade-in-up delay-100">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-2">
+                        <h3 class="text-xl sm:text-2xl font-bold text-charcoal-dark">Stage d'initiation (Génie Électrique)</h3>
+                        <span class="text-sm font-medium text-gray-500 mt-1 sm:mt-0">Juin 2023</span>
+                    </div>
+                    <p class="text-base sm:text-lg font-semibold text-gray-600 mb-4">RADEEF - Fès, Maroc</p>
+                    <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
+                        <li><strong>Observation active</strong> et travail avec les équipes des départements Basse Tension, Moyenne Tension et Haute Tension.</li>
+                        <li><strong>Participation</strong> à la réalisation de travaux neufs d'installation et à l'entretien des postes électriques (MT & BT).</li>
+                        <li><strong>Accompagnement</strong> sur l'élaboration et la vérification des études électriques (BT, MT, éclairage public).</li>
+                    </ul>
+                </div>
+                
+                <!-- Expérience 2: Festival des Sciences (MIS À JOUR) -->
+                <div class="bg-white p-6 sm:p-8 rounded-xl shadow-xl border-t-4 border-energy-green/70 fade-in-up delay-200">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-2">
+                        <h3 class="text-xl sm:text-2xl font-bold text-charcoal-dark">Animatrice et Organisatrice</h3>
+                        <span class="text-sm font-medium text-gray-500 mt-1 sm:mt-0">Mars 2024</span>
+                    </div>
+                    <p class="text-base sm:text-lg font-semibold text-gray-600 mb-4">Festival National des Sciences - Oujda, Maroc</p>
+                    <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
+                        <li><strong>Gestion de groupes</strong> et organisation d'ateliers interactifs et ludiques pour le public.</li>
+                        <li><strong>Présentation</strong> de concepts scientifiques complexes de manière simple et accessible.</li>
+                    </ul>
+                </div>
+
+                <!-- Expérience 3: Membre JLM (MIS À JOUR) -->
+                <div class="bg-white p-6 sm:p-8 rounded-xl shadow-xl border-t-4 border-energy-green/70 fade-in-up delay-300">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-2">
+                        <h3 class="text-xl sm:text-2xl font-bold text-charcoal-dark">Membre Actif (Bénévole)</h3>
+                        <span class="text-sm font-medium text-gray-500 mt-1 sm:mt-0">Engagement associatif</span>
+                    </div>
+                    <p class="text-base sm:text-lg font-semibold text-gray-600 mb-4">Club Social JLM</p>
+                    <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
+                        <li><strong>Participation</strong> active à des initiatives solidaires et à la collecte de fonds.</li>
+                        <li><strong>Aide</strong> à la planification et à l'organisation d'actions solidaires.</li>
+                    </ul>
+                </div>
+                
+                <!-- Expérience 4: Soutien Scolaire (MIS À JOUR) -->
+                <div class="bg-white p-6 sm:p-8 rounded-xl shadow-xl border-t-4 border-energy-green/70 fade-in-up delay-400">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-2">
+                        <h3 class="text-xl sm:text-2xl font-bold text-charcoal-dark">Professeure de soutien scolaire</h3>
+                        <span class="text-sm font-medium text-gray-500 mt-1 sm:mt-0">Octobre 2022</span>
+                    </div>
+                    <p class="text-base sm:text-lg font-semibold text-gray-600 mb-4">Indépendant</p>
+                    <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
+                        <li><strong>Aide</strong> à la compréhension des notions mathématiques de base pour des collégiens.</li>
+                        <li><strong>Accompagnement</strong> dans la préparation des évaluations.</li>
+                    </ul>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- --- -->
+        <!-- 5. Project gallery / visual proof -->
+        <!-- CETTE SECTION EST DÉSORMAIS VISIBLE ET REMPLIE -->
+        <section id="projects" class="py-16 sm:py-24 bg-white rounded-2xl transition-colors duration-500 my-16">
+            <h2 class="text-3xl sm:text-4xl font-bold text-center mb-12 sm:mb-16 text-charcoal-dark fade-in-up">
+                Projets Personnels & Scolaires
+            </h2>
+            <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+                
+                <!-- Projet 1 -->
+                <div class="bg-soft-gray rounded-xl shadow-lg overflow-hidden fade-in-up delay-100 border border-gray-200 p-5">
+                    <h3 class="text-xl font-semibold text-energy-green mb-2">MANAJEL SMART GRID</h3>
+                    <p class="text-gray-600 text-sm">
+                        Conception d'un réseau électrique intelligent (Smart Grid) pour optimiser la distribution et la consommation d'énergie.
+                    </p>
+                </div>
+
+                <!-- Projet 2 -->
+                <div class="bg-soft-gray rounded-xl shadow-lg overflow-hidden fade-in-up delay-200 border border-gray-200 p-5">
+                    <h3 class="text-xl font-semibold text-energy-green mb-2">Eclairage public intelligent</h3>
+                    <p class="text-gray-600 text-sm">
+                        Développement d'un système d'éclairage public adaptatif pour réduire la consommation d'énergie.
+                    </p>
+                </div>
+
+                <!-- Projet 3 -->
+                <div class="bg-soft-gray rounded-xl shadow-lg overflow-hidden fade-in-up delay-300 border border-gray-200 p-5">
+                    <h3 class="text-xl font-semibold text-energy-green mb-2">Karting électrique</h3>
+                    <p class="text-gray-600 text-sm">
+                        Projet de conception et réalisation d'un karting à motorisation électrique.
+                    </p>
+                </div>
+                
+                <!-- Projet 4 -->
+                <div class="bg-soft-gray rounded-xl shadow-lg overflow-hidden fade-in-up delay-400 border border-gray-200 p-5">
+                    <h3 class="text-xl font-semibold text-energy-green mb-2">Robot suiveur de ligne</h3>
+                    <p class="text-gray-600 text-sm">
+                        Programmation d'un robot mobile (base Arduino) capable de suivre une ligne tracée au sol.
+                    </p>
+                </div>
+
+                <!-- Projet 5 -->
+                <div class="bg-soft-gray rounded-xl shadow-lg overflow-hidden fade-in-up delay-500 border border-gray-200 p-5">
+                    <h3 class="text-xl font-semibold text-energy-green mb-2">SafeRing : bague intelligente</h3>
+                    <p class="text-gray-600 text-sm">
+                        Prototypage d'un dispositif portable (bague) d'assistance et de sécurité personnelle.
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- --- -->
+        <!-- 6. Education & Certifications -->
+        <!-- Background: bg-white (Alternance 4) -->
+        <section id="education" class="py-16 sm:py-24 bg-white rounded-2xl transition-colors duration-500 my-16">
+            <!-- CONTENU MIS À JOUR -->
+            <h2 class="text-3xl sm:text-4xl font-bold text-center mb-12 sm:mb-16 text-charcoal-dark fade-in-up">
+                Formation & Parcours Académique
+            </h2>
+            <div class="max-w-4xl mx-auto space-y-8 sm:space-y-12">
+                
+                <!-- Formation 1: CNAM (MIS À JOUR) -->
+                <div class="bg-soft-gray p-6 sm:p-8 rounded-xl shadow-lg border-l-4 border-energy-green fade-in-up delay-100">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-2">
+                        <h3 class="text-xl sm:text-2xl font-bold text-charcoal-dark">Cycle Ingénieur (CNAM)</h3>
+                        <span class="text-sm font-medium text-gray-500 mt-1 sm:mt-0">2025 – 2028 (prévu)</span>
+                    </div>
+                    <p class="text-lg text-gray-700 font-medium">Spécialisation : Génie Électrique</p>
+                    <p class="text-base text-gray-600 italic">Paris, France</p>
+                </div>
+
+                <!-- Formation 2: CPGE 2 (MIS À JOUR) -->
+                <div class="bg-soft-gray p-6 sm:p-8 rounded-xl shadow-lg border-l-4 border-energy-green fade-in-up delay-200">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-2">
+                        <h3 class="text-xl sm:text-2xl font-bold text-charcoal-dark">Classes Préparatoires (CPGE TSI)</h3>
+                        <span class="text-sm font-medium text-gray-500 mt-1 sm:mt-0">2024–2025</span>
+                    </div>
+                    <p class="text-lg text-gray-700 font-medium">Filière Technologie et Sciences Industrielles</p>
+                    <p class="text-base text-gray-600 italic">Lycée Le Corbusier - Aubervilliers, France</p>
+                </div>
+
+                <!-- Formation 3: CPGE 1 (MIS À JOUR) -->
+                <div class="bg-soft-gray p-6 sm:p-8 rounded-xl shadow-lg border-l-4 border-energy-green fade-in-up delay-300">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-2">
+                        <h3 class="text-xl sm:text-2xl font-bold text-charcoal-dark">Classes Préparatoires (CPGE TSI)</h3>
+                        <span class="text-sm font-medium text-gray-500 mt-1 sm:mt-0">2022–2024</span>
+                    </div>
+                    <p class="text-lg text-gray-700 font-medium">Filière Technologie et Sciences Industrielles</p>
+                    <p class="text-base text-gray-600 italic">Lycée Omar Ibn Abdelaziz - Oujda, Maroc</p>
+                </div>
+
+                <!-- Formation 4: BAC (MIS À JOUR) -->
+                <div class="bg-soft-gray p-6 sm:p-8 rounded-xl shadow-lg border-l-4 border-energy-green fade-in-up delay-400">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-2">
+                        <h3 class="text-xl sm:text-2xl font-bold text-charcoal-dark">Baccalauréat (Mention Bien)</h3>
+                        <span class="text-sm font-medium text-gray-500 mt-1 sm:mt-0">2021-2022</span>
+                    </div>
+                    <p class="text-lg text-gray-700 font-medium">Sciences et Technologies Électriques (STE)</p>
+                    <p class="text-base text-gray-600 italic">Lycée Technique - Fès, Maroc</p>
+                </div>
+            </div>
+
+            <!-- Langues & Intérêts (MIS À JOUR) -->
+            <div class="max-w-4xl mx-auto mt-10 pt-6 sm:mt-12 sm:pt-8 border-t border-gray-300 fade-in-up delay-500">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-2xl font-bold text-center text-charcoal-dark mb-4">Langues</h3>
+                        <p class="text-center text-lg sm:text-xl text-gray-700">
+                            Français (Courant)<br>
+                            Anglais (Courant)<br>
+                            Arabe (Langue maternelle)
+                        </p>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-center text-charcoal-dark mb-4">Centres d'intérêt</h3>
+                        <p class="text-center text-lg sm:text-xl text-gray-700">
+                            Bénévolat, Pâtisserie, Cuisine, Voyages, Sport
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- --- -->
+        <!-- 7. Contact + Download CV CTA -->
+        <section id="contact" class="py-16 sm:py-24">
+            <!-- CONTENU MIS À JOUR -->
+            <h2 class="text-3xl sm:text-4xl font-bold text-center mb-12 sm:mb-16 text-charcoal-dark fade-in-up">
+                Contact & Prochaines Étapes
+            </h2>
+            <div class="max-w-xl mx-auto space-y-12">
+                
+                <!-- Bloc d'informations de contact (MIS À JOUR) -->
+                <div class="bg-charcoal-dark text-white p-8 sm:p-12 rounded-2xl shadow-2xl space-y-6 fade-in-up delay-100">
+
+                    <div class="flex items-start space-x-4">
+                        <!-- Icône Mail -->
+                        <svg class="w-6 h-6 text-energy-green flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8m-2 4v7a2 2 0 01-2 2H5a2 2 0 01-2-2v-7"></path></svg>
+                        <div>
+                            <p class="text-sm text-gray-400">Email</p>
+                            <a href="mailto:hibaaafil2@gmail.com" class="text-base sm:text-lg font-medium hover:text-energy-green transition duration-200">hibaaafil2@gmail.com</a>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start space-x-4">
+                        <!-- Icône Téléphone -->
+                        <svg class="w-6 h-6 text-energy-green flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+                        <div>
+                            <p class="text-sm text-gray-400">Téléphone</p>
+                            <span class="text-base sm:text-lg font-medium">+33 7 51 21 14 34</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start space-x-4">
+                        <!-- Icône Localisation -->
+                        <svg class="w-6 h-6 text-energy-green flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.828 0l-4.243-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                        <div>
+                            <p class="text-sm text-gray-400">Localisation (Mobile en IDF)</p>
+                            <span class="text-base sm:text-lg font-medium">93130 Noisy le sec (IDF)</span>
+                        </div>
+                    </div>
+                    
+                    <!-- NOUVEAU: Permis B -->
+                    <div class="flex items-start space-x-4">
+                        <!-- Icône Voiture -->
+                        <svg class="w-6 h-6 text-energy-green flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l-7-7 7-7m5 14l7-7-7-7"></path><path d="M19.4 5.6a1.5 1.5 0 0 0-2.1 0L12 10.9 6.7 5.6a1.5 1.5 0 0 0-2.1 2.1L10 13l-5.4 5.3a1.5 1.5 0 0 0 2.1 2.1L12 15.1l5.3 5.3a1.5 1.5 0 0 0 2.1-2.1L14 13l5.3-5.3a1.5 1.5 0 0 0 0-2.1z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17l-5-5 5-5M15 17l5-5-5-5"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14"></path><path d="M0 0h24v24H0z" stroke="none" fill="none"></path><path d="M7 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path><path d="M17 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path><path d="M5 17h-2v-6l2 -5h9l4 5h1a2 2 0 0 1 2 2v4h-2m-4 0h-6m-6 -6h15m-6 0v-5"></path></svg>
+                        <div>
+                            <p class="text-sm text-gray-400">Mobilité</p>
+                            <span class="text-base sm:text-lg font-medium">Permis B</span>
+                        </div>
+                    </div>
+
+                    <div class="pt-6 border-t border-gray-700">
+                        <!-- Bouton CV Téléchargement SUPPRIMÉ -->
+                        <div class="pt-4 text-center">
+                            <!-- LIEN MIS À JOUR -->
+                            <a href="https://www.linkedin.com/in/hiba-aafi/" target="_blank" aria-label="Profil LinkedIn de Hiba Aafi" class="inline-flex items-center space-x-2 text-base sm:text-lg font-semibold text-energy-green hover:text-emerald-400 transition duration-200">
+                                <!-- Icône LinkedIn (à jour) -->
+                                <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.551-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.742 7 2.742v6.493z"></path></svg>
+                                <span>Mon Profil LinkedIn</span>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- NOUVEAU BLOC : Déposer votre Candidature (CV Drop) -->
+                <div class="bg-white p-8 sm:p-12 rounded-2xl shadow-xl space-y-4 fade-in-up delay-200 text-center border border-gray-200">
+                    <!-- CONTENU MIS À JOUR -->
+                    <h3 class="text-2xl font-bold text-charcoal-dark">Vous avez une opportunité ?</h3>
+                    <p class="text-gray-700 text-lg">
+                        Envoyez-moi votre description de poste. Je suis disponible pour un entretien à votre convenance.
+                    </p>
+                    <!-- LIEN MIS À JOUR -->
+                    <a href="mailto:hibaaafil2@gmail.com" class="inline-flex items-center space-x-2 px-6 py-3 text-lg font-medium rounded-full text-white bg-energy-green hover:bg-emerald-700 transition duration-300 shadow-lg">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8m-2 4v7a2 2 0 01-2 2H5a2 2 0 01-2-2v-7"></path></svg>
+                        <span>Envoyer votre offre par Email</span>
+                    </a>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- NOUVEAU: CTA Flottant Mobile (MIS À JOUR) -->
+    <div class="md:hidden fixed bottom-0 left-0 w-full z-40 p-3 bg-white border-t border-soft-gray shadow-lg">
+        <a href="#contact" class="flex items-center justify-center space-x-2 w-full px-4 py-3 text-lg font-bold rounded-xl text-white bg-energy-green hover:bg-emerald-700 transition duration-300">
+            <!-- Icône Mail -->
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8m-2 4v7a2 2 0 01-2 2H5a2 2 0 01-2-2v-7"></path></svg>
+            <span>Alternance : Contacter Hiba</span>
+        </a>
+    </div>
+
+    <!-- Footer (MIS À JOUR) -->
+    <footer class="bg-charcoal-dark text-white p-8 mt-12">
+        <div class="max-w-7xl mx-auto text-center text-sm text-gray-400">
+            &copy; 2025 Hiba Aafi. Optimisé pour l'emploi.
+        </div>
+    </footer>
+
+    <!-- JavaScript pour l'animation 'fade-in-up' et Intro -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // --- Logique d'Animation Fade-In-Up pour les sections ---
+            const elements = document.querySelectorAll('.fade-in-up');
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.15
+            });
+
+            elements.forEach(element => {
+                observer.observe(element);
+            });
+
+
+            // --- Logique Menu Mobile (AJOUTÉE) ---
+            const menuButton = document.getElementById('menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const iconOpen = document.getElementById('menu-icon-open');
+            const iconClose = document.getElementById('menu-icon-close');
+            const mobileLinks = mobileMenu.querySelectorAll('a');
+
+            function toggleMenu() {
+                const isHidden = mobileMenu.classList.contains('hidden');
+                if (isHidden) {
+                    mobileMenu.classList.remove('hidden');
+                    iconOpen.classList.add('hidden');
+                    iconClose.classList.remove('hidden');
+                    // Empêche le scroll sur le corps du document lorsque le menu est ouvert
+                    document.body.style.overflow = 'hidden'; 
+                } else {
+                    mobileMenu.classList.add('hidden');
+                    iconOpen.classList.remove('hidden');
+                    iconClose.classList.add('hidden');
+                    // Réactive le scroll
+                    document.body.style.overflow = '';
+                }
+            }
+
+            menuButton.addEventListener('click', toggleMenu);
+
+            // Ferme le menu quand un lien est cliqué
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (!mobileMenu.classList.contains('hidden')) {
+                        setTimeout(toggleMenu, 300); // Laisse le temps pour le scroll doux
+                    }
+                });
+            });
+            // --- FIN Logique Menu Mobile ---
+
+
+            // --- Logique d'Animation d'Introduction (Machine à Écrire) ---
+            const introOverlay = document.getElementById('intro-overlay');
+            
+            // 1. Vérifie si l'intro a déjà été jouée dans cette session
+            if (sessionStorage.getItem('introPlayed') === 'true') {
+                introOverlay.style.display = 'none';
+                return; // Stoppe l'exécution du reste du script d'intro
+            }
+            
+            // 2. Si non jouée, procède à l'animation
+            const introTextElement = document.getElementById('intro-text');
+            // TEXTE MIS À JOUR (Prête)
+            const textToType = "Prête à découvrir mon parcours ? Allons-y.".split(' ');
+            const delayBetweenWords = 150; // Délai entre chaque mot (ms)
+            const finalDelay = 2500; // 2.5 secondes après affichage complet (ms)
+            let wordIndex = 0;
+
+            function typeWord() {
+                if (wordIndex < textToType.length) {
+                    // Ajoute un mot avec un espace, puis un petit délai
+                    introTextElement.textContent += textToType[wordIndex] + (wordIndex < textToType.length - 1 ? ' ' : '');
+                    wordIndex++;
+                    setTimeout(typeWord, delayBetweenWords);
+                } else {
+                    // Animation terminée : retire le curseur et fait disparaître l'overlay
+                    introTextElement.classList.add('finished');
+                    // Marque l'intro comme jouée
+                    sessionStorage.setItem('introPlayed', 'true'); 
+                    
+                    setTimeout(function() {
+                        // Déclenche la transition de l'overlay (opacity 1 -> 0)
+                        introOverlay.style.opacity = '0';
+                        // Supprime l'overlay du DOM après la transition
+                        setTimeout(() => {
+                            introOverlay.style.display = 'none';
+                        }, 1000); // 1000ms = durée de transition CSS
+                    }, finalDelay);
+                }
+            }
+            typeWord();
+        });
+    </script>
+</body>
+</html>
+
